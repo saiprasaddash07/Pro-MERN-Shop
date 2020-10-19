@@ -3,7 +3,8 @@ const dotenv = require('dotenv');
 const connectDB = require('./config/db');
 const colors = require('colors');
 
-const products = require('./data/products');
+const productRoutes = require('./routes/productRoutes');
+const {notFound,errorHandler} = require('./middleware/errorMiddleware');
 
 dotenv.config();
 
@@ -15,14 +16,10 @@ app.get('/',(req,res)=>{
     res.send('Hello');
 });
 
-app.get('/api/products',(req,res)=>{
-    res.json(products);
-});
+app.use('/api/products',productRoutes);
 
-app.get('/api/products/:id',(req,res)=>{
-    const product = products.find(p=> p._id === req.params.id);
-    res.json(product);
-});
+app.use(notFound);
+app.use(errorHandler);
 
 const PORT = process.env.PORT || 5000;
 
