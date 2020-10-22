@@ -1,6 +1,6 @@
 import React,{Component} from 'react';
 import { Link } from 'react-router-dom';
-import { Row, Col, ListGroup, Card, Button, Image } from 'react-bootstrap';
+import { Row, Col, ListGroup, Card, Button, Image,Form } from 'react-bootstrap';
 import Rating from '../components/rating';
 import { connect } from 'react-redux';
 import * as actions from "../actions/productActions";
@@ -9,6 +9,10 @@ import Message from "../components/message";
 
 class ProductScreen extends Component{
 
+    state = {
+        qty : 1
+    }
+
     componentDidMount() {
         // const fetchProduct = async () => {
         //     const res = await axios.get(`/api/products/${this.props.match.params.id}`);
@@ -16,9 +20,14 @@ class ProductScreen extends Component{
         // }
         // fetchProduct();
         this.props.onInitProduct(this.props.match.params.id);
-    }
+    };
 
     render() {
+
+        const addToCartHandler = () => {
+            this.props.history.push(`/cart/${this.props.match.params.id}?qty=${this.state.qty}`);
+        }
+
         console.log(this.props.product);
         //const product = this.state.products.find(p => p._id === this.props.match.params.id);
         return (
@@ -74,8 +83,43 @@ class ProductScreen extends Component{
                                                 </Col>
                                             </Row>
                                         </ListGroup.Item>
+
+                                        {this.props.product.countInStock > 0 && (
+                                            <ListGroup.Item>
+                                                <Row>
+                                                    <Col>
+                                                        Qty
+                                                    </Col>
+                                                    <Col>
+                                                        <Form.Control
+                                                            as="select"
+                                                            value={this.state.qty}
+                                                            onChange={(e)=>{
+                                                                this.setState({qty:e.target.value})
+                                                            }}
+                                                        >
+                                                            {
+                                                                [...Array(this.props.product.countInStock).keys()].map(x => (
+                                                                <option
+                                                                    key={x+1}
+                                                                    value={x+1}>
+                                                                    {x+1}
+                                                                </option>
+                                                                ))
+                                                            }
+                                                        </Form.Control>
+                                                    </Col>
+                                                </Row>
+                                            </ListGroup.Item>
+                                        )}
+
                                         <ListGroup.Item>
-                                            <Button className="btn-block" type="button" disabled={this.props.product.countInStock === 0}>
+                                            <Button
+                                                className="btn-block"
+                                                type="button"
+                                                disabled={this.props.product.countInStock === 0}
+                                                onClick={addToCartHandler}
+                                            >
                                                 Add to Cart
                                             </Button>
                                         </ListGroup.Item>
