@@ -46,7 +46,7 @@ class CartScreen extends Component {
                     <h1>Shopping Cart</h1>
                     {this.props.cart.cartItems.length === 0
                         ? <Message> Your Cart Is Empty!
-                            { <Link to="/">Go Back</Link> }
+                            { <Link to="/"> Go Back</Link> }
                         </Message> :(
                             <ListGroup variant={"flush"}>
                                 {this.props.cart.cartItems.map(item => (
