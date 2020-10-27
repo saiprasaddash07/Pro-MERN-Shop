@@ -76,3 +76,82 @@ export const register = (name,email,password) => async (dispatch) => {
         });
     }
 }
+
+export const getUserDetails = (id) => async (dispatch,getState) => {
+    try {
+        dispatch({
+            type: constants.USER_DETAILS_REQUEST
+        });
+
+        const {user : { userInfo }} = getState();
+
+        const config = {
+            headers: {
+                "Content-Type": 'application/json',
+                Authorization : `Bearer ${userInfo.token}`
+            }
+        }
+
+        console.log(id);
+
+        const {data} = await axios.get(`/api/users/${id}`, config);
+
+        console.log(data);
+
+        dispatch({
+            type: constants.USER_DETAILS_SUCCESS,
+            payload: data
+        });
+    } catch (error) {
+        dispatch({
+            type: constants.USER_DETAILS_FAIL,
+            payload:
+                error.response &&
+                error.response.data.message
+                    ? error.response.data.message
+                    : error.message
+        });
+    }
+}
+
+export const updateUserDetails = (user) => async (dispatch,getState) => {
+    try {
+        dispatch({
+            type: constants.USER_UPDATE_PROFILE_REQUEST
+        });
+
+        const {user : { userInfo }} = getState();
+
+        const config = {
+            headers: {
+                "Content-Type": 'application/json',
+                Authorization : `Bearer ${userInfo.token}`
+            }
+        }
+
+        const {data} = await axios.put(`/api/users/profile`,user, config);
+
+        console.log(data);
+
+        dispatch({
+            type: constants.USER_UPDATE_PROFILE_SUCCESS,
+            payload: data
+        });
+
+        dispatch({
+            type: constants.USER_LOGIN_SUCCESS,
+            payload: data
+        });
+
+        localStorage.setItem('userInfo',JSON.stringify(data));
+    } catch (error) {
+        dispatch({
+            type: constants.USER_UPDATE_PROFILE_FAIL,
+            payload:
+                error.response &&
+                error.response.data.message
+                    ? error.response.data.message
+                    : error.message
+        });
+    }
+}

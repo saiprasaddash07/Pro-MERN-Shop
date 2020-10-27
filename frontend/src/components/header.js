@@ -5,9 +5,12 @@ import {connect} from 'react-redux';
 import * as actions from '../actions/userActions';
 
 class Header extends Component {
+
     render() {
+
         const logoutHandler = () => {
             this.props.onLogOutHandler();
+            window.location.reload(false);
         }
 
         return (
@@ -31,7 +34,7 @@ class Header extends Component {
                                     ?   <NavDropdown
                                             title={this.props.user.userInfo.name}
                                             id="username">
-                                        <LinkContainer to="/profile">
+                                        <LinkContainer to='/profile'>
                                             <NavDropdown.Item>
                                                 Profile
                                             </NavDropdown.Item>
