@@ -2,9 +2,9 @@ import React, {Component} from 'react';
 import {Button,Row,Col,ListGroup,Image,Card} from 'react-bootstrap';
 import { connect } from 'react-redux';
 import Message from '../components/message';
-import * as actions from "../actions/cartActions";
 import CheckoutSteps  from '../components/checkoutSteps';
 import {Link} from 'react-router-dom';
+import * as actions from '../actions/orderActions';
 
 class PlaceOrderScreen extends Component {
 
@@ -28,7 +28,19 @@ class PlaceOrderScreen extends Component {
 
 
         const placeOrderHandler = () => {
-
+            this.props.onCreatingOrder({
+                orderItems : this.props.cart.cartItems,
+                shippingAddress : this.props.cart.shippingAddress,
+                paymentMethod : this.props.cart.paymentMethod.paymentMethod,
+                itemsPrice : this.props.cart.itemsPrice,
+                taxPrice : this.props.cart.taxPrice,
+                shippingPrice : this.props.cart.shippingPrice,
+                totalPrice : this.props.cart.totalPrice
+            }).then(res=>{
+                this.props.history.push(`/order/${this.props.orderCreate.order._id}`);
+            }).catch(e=>{
+                console.log('Some error occurred here!');
+            });
         }
 
         return (
@@ -132,6 +144,10 @@ class PlaceOrderScreen extends Component {
                                 </ListGroup.Item>
 
                                 <ListGroup.Item>
+                                    {this.props.orderCreate.error && <Message variant='danger'>{this.props.orderCreate.error}</Message>}
+                                </ListGroup.Item>
+
+                                <ListGroup.Item>
                                     <Button
                                         type="button"
                                         className="btn-block"
@@ -154,14 +170,15 @@ class PlaceOrderScreen extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        cart : state.cart
+        cart : state.cart,
+        orderCreate : state.orderCreate
     }
 }
 
-// const mapDispatchToProps = (dispatch) => {
-//     return {
-//         onSavingShippingAddress : (data) => dispatch(actions.saveShippingAddress(data))
-//     }
-// }
+const mapDispatchToProps = (dispatch) => {
+    return {
+        onCreatingOrder : (order) => dispatch(actions.createOrder(order))
+    }
+}
 
-export default connect(mapStateToProps)(PlaceOrderScreen);
+export default connect(mapStateToProps,mapDispatchToProps)(PlaceOrderScreen);

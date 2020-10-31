@@ -3,14 +3,16 @@ import { LinkContainer } from 'react-router-bootstrap';
 import {Nav, Navbar, Container, NavDropdown} from 'react-bootstrap';
 import {connect} from 'react-redux';
 import * as actions from '../actions/userActions';
+import LogoSvg from '../Logo/shopping-cart.svg';
 
 class Header extends Component {
 
     render() {
 
+        console.log(this.props);
+
         const logoutHandler = () => {
             this.props.onLogOutHandler();
-            window.location.reload(false);
         }
 
         return (
@@ -18,7 +20,10 @@ class Header extends Component {
                 <Navbar bg="dark" variant="dark" expand="lg" collapseOnSelect>
                     <Container>
                         <LinkContainer to="/">
-                            <Navbar.Brand>Pro-MERN-Shop</Navbar.Brand>
+                            <Navbar.Brand>
+                                <img src={LogoSvg} alt="Logo" style={{"height":"40px"}}/>
+                                Pro-MERN-Shop
+                            </Navbar.Brand>
                         </LinkContainer>
                         <Navbar.Toggle aria-controls="basic-navbar-nav" />
                         <Navbar.Collapse id="basic-navbar-nav">
@@ -39,9 +44,11 @@ class Header extends Component {
                                                 Profile
                                             </NavDropdown.Item>
                                         </LinkContainer>
-                                        <NavDropdown.Item onClick={logoutHandler}>
-                                            Log Out
-                                        </NavDropdown.Item>
+                                        <LinkContainer to='/login'>
+                                            <NavDropdown.Item onClick={logoutHandler}>
+                                                Log Out
+                                            </NavDropdown.Item>
+                                        </LinkContainer>
                                     </NavDropdown>
                                     : (<LinkContainer to="/login">
                                         <Nav.Link>
