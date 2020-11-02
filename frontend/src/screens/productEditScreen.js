@@ -84,9 +84,11 @@ class ProductEditScreen extends Component {
                     }
                 }
 
-                const { data } = await axios.post('/api/upload',formData,config);
+                let { data } = await axios.post('/api/upload',formData,config);
 
-                console.log(data);
+                if(data.startsWith('/frontend')){
+                    data = data.replace('/frontend/public','');
+                }
 
                 this.setState({image:data});
                 this.setState({uploading:false});

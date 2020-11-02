@@ -5,7 +5,7 @@ const path  = require('path');
 
 const storage = multer.diskStorage({
     destination(req, file, cb) {
-        cb(null, 'uploads/');
+        cb(null, 'frontend/public/uploads/');
     },
     filename(req, file, cb) {
         cb(
@@ -35,8 +35,6 @@ const upload = multer({
 })
 
 router.post('/', upload.single('image'), (req, res) => {
-    console.log("upload");
-    console.log(req.file.path);
     res.send(`/${req.file.path}`);
 })
 

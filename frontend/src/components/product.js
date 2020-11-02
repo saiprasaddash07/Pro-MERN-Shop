@@ -5,11 +5,11 @@ import Rating from './rating';
 import { Link } from 'react-router-dom';
 
 const Product = (props) => {
-    console.log(props.product.image);
+    
     return (
         <Card className="my-3 p-3 rounded">
             <Link to={`/product/${props.product._id}`}>
-                <Card.Img src={require(props.product.image)} variant="top" />
+                <Card.Img src={props.product.image} variant="top" />
             </Link>
 
             <Card.Body>

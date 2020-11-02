@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Row,Col,ListGroup,Image,Card} from 'react-bootstrap';
+import {Row,Col,ListGroup,Image,Card,Button} from 'react-bootstrap';
 import { connect } from 'react-redux';
 import Message from '../components/message';
 import {Link} from 'react-router-dom';
@@ -15,6 +15,10 @@ class OrderScreen extends Component {
     }
 
     componentDidMount() {
+        if(!this.props.user.userInfo){
+            this.props.history.push('/login');
+        }
+
         const addPaypalScript = async () =>{
             const {data : clientId} = await axios.get('/api/config/paypal');
             const script = document.createElement('script');
@@ -70,6 +74,17 @@ class OrderScreen extends Component {
                     this.props.gettingAnOrderById(this.props.match.params.id).then(res=>{
                         this.props.onOrderPayResetting();
                     })
+                });
+        }
+
+        const deliverHandler = () => {
+            this.props.onDeliveringOrder(this.props.orderDetails.order)
+                .then(r=>{
+                    if(this.props.orderDeliver.success){
+                        this.props.gettingAnOrderById(this.props.match.params.id).then(res=>{
+                            this.props.onOrderDeliverResetting();
+                        })
+                    }
                 });
         }
 
@@ -210,6 +225,25 @@ class OrderScreen extends Component {
                                         </ListGroup.Item>
                                     )}
 
+                                    {this.props.orderDeliver.loading && <Loader />}
+
+                                    {this.props.user.userInfo
+                                        && this.props.user.userInfo.isAdmin
+                                        && this.props.orderDetails.order.isPaid
+                                        && !this.props.orderDetails.order.isDelivered
+                                        && (
+                                                <ListGroup.Item>
+                                                    <Button
+                                                        type="button"
+                                                        className="tn btn-block"
+                                                        onClick={deliverHandler}
+                                                    >
+                                                        Mark as delivered
+                                                    </Button>
+                                                </ListGroup.Item>
+                                            )
+                                    }
+
                                 </ListGroup>
                             </Card>
                         </Col>
@@ -223,7 +257,9 @@ class OrderScreen extends Component {
 const mapStateToProps = (state) => {
     return {
         orderDetails : state.orderDetails,
-        orderPay : state.orderPay
+        orderPay : state.orderPay,
+        user : state.user,
+        orderDeliver : state.orderDeliver,
     }
 }
 
@@ -231,7 +267,9 @@ const mapDispatchToProps = (dispatch) => {
     return {
         gettingAnOrderById : (id) => dispatch(actions.getOrderDetails(id)),
         onPayingOrder : (id,res) => dispatch(actions.payOrder(id,res)),
-        onOrderPayResetting : () => dispatch(actions.orderReset())
+        onOrderPayResetting : () => dispatch(actions.orderReset()),
+        onOrderDeliverResetting : () => dispatch(actions.orderDeliverReset()),
+        onDeliveringOrder : (order) => dispatch(actions.deliverOrder(order)),
     }
 }
 
