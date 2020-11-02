@@ -6,14 +6,17 @@ import Footer from './components/footer';
 import HomeScreen from './screens/homescreen';
 import ProductScreen from './screens/productScreen';
 import CartScreen from './screens/cartScreen';
-import LoginScreen from "./screens/loginScreen";
+import LoginScreen from './screens/loginScreen';
 import RegisterScreen from './screens/registerScreen';
 import ProfileScreen from './screens/profileScreen';
 import ShippingScreen from './screens/shippingScreen';
 import PaymentScreen from './screens/paymentScreen';
-import PlaceOrderScreen from "./screens/placeOrderScreen";
-import OrderScreen from "./screens/orderScreen";
-import UserListScreen from "./screens/userListScreen";
+import PlaceOrderScreen from './screens/placeOrderScreen';
+import OrderScreen from './screens/orderScreen';
+import UserListScreen from './screens/userListScreen';
+import UserEditScreen from './screens/userEditScreen';
+import ProductListScreen from "./screens/productListScreen";
+import ProductEditScreen from "./screens/productEditScreen";
 
 const App = () => {
   return (
@@ -23,6 +26,7 @@ const App = () => {
         <main className="py-4">
           <Container>
             <Route path="/admin/userlist" component={UserListScreen} />
+            <Route path="/admin/productlist" component={ProductListScreen} />
             <Route path="/order/:id" component={OrderScreen} />
             <Route path="/placeorder" component={PlaceOrderScreen} />
             <Route path="/payment" component={PaymentScreen} />
@@ -32,6 +36,8 @@ const App = () => {
             <Route path="/register" component={RegisterScreen} />
             <Route path="/product/:id" component={ProductScreen} />
             <Route path="/cart/:id?" component={CartScreen} />
+            <Route path="/admin/user/:id/edit" component={UserEditScreen} />
+            <Route path="/admin/product/:id/edit" component={ProductEditScreen} />
             <Route path="/" exact component={HomeScreen} />
           </Container>
         </main>

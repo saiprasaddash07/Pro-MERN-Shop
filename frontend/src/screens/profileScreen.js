@@ -28,7 +28,6 @@ class ProfileScreen extends Component {
                     });
                 });
             }else{
-                console.log(this.props.userDetails.user);
                 this.setState({
                     name: this.props.userDetails.user.name,
                     email: this.props.userDetails.user.email,
