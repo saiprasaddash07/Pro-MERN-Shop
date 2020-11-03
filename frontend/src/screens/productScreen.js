@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import * as actions from "../actions/productActions";
 import Loader from "../components/loader";
 import Message from "../components/message";
+import MetaComponent from "../components/meta";
 
 class ProductScreen extends Component{
 
@@ -53,6 +54,9 @@ class ProductScreen extends Component{
                         ? <Message variant="danger">{this.props.error}</Message>
                         :  (
                           <div>
+
+                              <MetaComponent title={this.props.product.title} />
+
                             <Row>
                                 <Col md={6}>
                                     <Image src={this.props.product.image} alt={this.props.product.name} fluid />

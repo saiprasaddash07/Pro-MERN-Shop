@@ -6,6 +6,9 @@ import * as actions from '../actions/productActions';
 import Message from "../components/message";
 import Loader from '../components/loader';
 import Paginate from '../components/paginate';
+import ProductCarousel from '../components/productCarousel';
+import MetaComponent from '../components/meta';
+import {Link} from "react-router-dom";
 
 class HomeScreen extends  Component {
 
@@ -28,6 +31,16 @@ class HomeScreen extends  Component {
 
         return (
             <div>
+
+                <MetaComponent />
+
+                {!this.props.match.params.keyword
+                    ? <ProductCarousel />
+                    : <Link to='/' className="btn btn-light">
+                        Go Back
+                    </Link>
+                }
+
                 <h1>Latest Products</h1>
                 {this.props.loading
                     ? <Loader />
