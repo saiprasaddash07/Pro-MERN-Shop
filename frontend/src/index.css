@@ -20,6 +20,10 @@ h2{
   padding: 0.5rem 0;
 }
 
+.rating span {
+  margin: 0.1rem;
+}
+
 .carousel-item-next,
 .carousel-item-prev,
 .carousel-item.active {
@@ -31,15 +35,65 @@ h2{
 }
 
 .carousel-caption h2 {
-  color: #fff;
+  color: palevioletred;
 }
 
 .carousel img {
   height: 300px;
   padding: 30px;
-  margin: 40px;
+  margin-top: 60px;
+  margin-left: 350px;
+  margin-bottom: 20px;
   border-radius: 50%;
 }
 .carousel a {
   margin: 0 auto;
+}
+
+@media (max-width: 1200px) and (min-width: 1000px ){
+  .carousel img {
+    margin-top: 60px;
+    margin-left: 300px;
+    margin-bottom: 20px;
+  }
+}
+
+@media (max-width: 990px) and (min-width: 765px ){
+  .carousel img {
+    margin-top: 60px;
+    margin-left: 150px;
+    margin-bottom: 20px;
+  }
+}
+
+@media (max-width: 765px) and (min-width: 501px ){
+  .carousel img {
+    margin-top: 100px;
+    margin-left: 80px;
+    margin-bottom: 20px;
+  }
+}
+
+@media (max-width: 500px) and (min-width: 451px ){
+  .carousel img {
+    margin-top: 100px;
+    margin-left: 40px;
+    margin-bottom: 20px;
+  }
+}
+
+@media (max-width: 450px) and (min-width: 400px ){
+  .carousel img {
+    margin-top: 100px;
+    margin-left: 20px;
+    margin-bottom: 20px;
+  }
+}
+
+@media (max-width: 400px){
+  .carousel img {
+    margin-top: 100px;
+    margin-left: 10px;
+    margin-bottom: 20px;
+  }
 }
