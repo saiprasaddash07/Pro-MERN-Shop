@@ -4,15 +4,28 @@ import Product from '../components/product';
 import { connect } from 'react-redux';
 import * as actions from '../actions/productActions';
 import Message from "../components/message";
-import Loader from "../components/loader";
+import Loader from '../components/loader';
+import Paginate from '../components/paginate';
 
 class HomeScreen extends  Component {
 
     componentDidMount() {
-        this.props.onInitProduct();
+        this.props.onInitProduct(this.props.match.params.keyword,(this.props.match.params.pageNumber || 1));
+    }
+
+    componentDidUpdate(prevProps, prevState) {
+        if(
+            (this.props.match.params.keyword !== prevProps.match.params.keyword) ||
+            (this.props.match.params.pageNumber !== prevProps.match.params.pageNumber)
+        )
+        {
+            this.props.onInitProduct(this.props.match.params.keyword,(this.props.match.params.pageNumber || 1));
+        }
     }
 
     render(){
+        //const pageNumber = this.props.match.params.pageNumber || 1;
+
         return (
             <div>
                 <h1>Latest Products</h1>
@@ -21,6 +34,7 @@ class HomeScreen extends  Component {
                     : this.props.error
                         ? <Message variant="danger">{this.props.error}</Message>
                         :
+                        <>
                         <Row>
                             {this.props.products.map(product => {
                                 return (
@@ -30,6 +44,15 @@ class HomeScreen extends  Component {
                                 );
                             })}
                         </Row>
+
+                        <Paginate
+                            page={this.props.page}
+                            pages={this.props.pages}
+                            keyword={this.props.match.params.keyword
+                                ? this.props.match.params.keyword : '' }
+                        />
+
+                        </>
                 }
             </div>
         );
@@ -40,13 +63,15 @@ const mapStateToProps = state => {
     return {
         products: state.productList.products,
         loading: state.productList.loading,
-        error: state.productList.error
+        error: state.productList.error,
+        page: state.productList.page,
+        pages: state.productList.pages
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
-        onInitProduct : () => dispatch(actions.listProducts())
+        onInitProduct : (keyword,pageNumber) => dispatch(actions.listProducts(keyword,pageNumber))
     }
 }
 

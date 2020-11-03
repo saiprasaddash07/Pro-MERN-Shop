@@ -1,12 +1,12 @@
 import * as constants from '../constants/productConstants';
 import axios from 'axios';
 
-export const listProducts = () => async(dispatch) => {
+export const listProducts = (keyword='',pageNumber = '') => async(dispatch) => {
     try{
         dispatch({
             type: constants.PRODUCT_LIST_REQUEST
         });
-        const {data} = await axios.get('/api/products');
+        const {data} = await axios.get(`/api/products?keyword=${keyword}&pageNumber=${pageNumber}`);
         dispatch({
             type: constants.PRODUCT_LIST_SUCCESS,
             payload:data
@@ -144,6 +144,45 @@ export const updateProduct = (product) => async (dispatch,getState) => {
     } catch (error) {
         dispatch({
             type: constants.PRODUCT_UPDATE_FAIL,
+            payload:
+                error.response &&
+                error.response.data.message
+                    ? error.response.data.message
+                    : error.message
+        });
+    }
+}
+
+export const resetProductReview = () => (dispatch) => {
+    dispatch({
+        type: constants.PRODUCT_CREATE_REVIEW_RESET,
+    });
+}
+
+export const createProductReview = (productId,review) => async (dispatch,getState) => {
+    try {
+        dispatch({
+            type: constants.PRODUCT_CREATE_REVIEW_REQUEST
+        });
+
+        const {user: {userInfo}} = getState();
+
+        const config = {
+            headers: {
+                'Content-Type' : 'application/json',
+                Authorization: `Bearer ${userInfo.token}`
+            }
+        }
+
+        await axios.post(`/api/products/${productId}/reviews`,review, config);
+
+        dispatch({
+            type: constants.PRODUCT_CREATE_REVIEW_SUCCESS,
+            success : true
+        });
+    } catch (error) {
+        dispatch({
+            type: constants.PRODUCT_CREATE_REVIEW_FAIL,
             payload:
                 error.response &&
                 error.response.data.message

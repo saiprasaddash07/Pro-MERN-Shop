@@ -4,6 +4,8 @@ import {Nav, Navbar, Container, NavDropdown} from 'react-bootstrap';
 import {connect} from 'react-redux';
 import * as actions from '../actions/userActions';
 import LogoSvg from '../Logo/shopping-cart.svg';
+import SearchBox from "./searchBox";
+import {Route} from 'react-router-dom';
 
 class Header extends Component {
 
@@ -27,6 +29,7 @@ class Header extends Component {
                         </LinkContainer>
                         <Navbar.Toggle aria-controls="basic-navbar-nav" />
                         <Navbar.Collapse id="basic-navbar-nav">
+                            <Route render={({history}) => <SearchBox history={history} />} />
                             <Nav className="ml-auto">
                                 <LinkContainer exact to="/cart">
                                     <Nav.Link>

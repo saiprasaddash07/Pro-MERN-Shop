@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {LinkContainer} from 'react-router-bootstrap';
-import {Table,Button,Row,Col} from 'react-bootstrap';
+import {Table,Button} from 'react-bootstrap';
 import { connect } from 'react-redux';
 import Message from '../components/message';
 import Loader from "../components/loader";
