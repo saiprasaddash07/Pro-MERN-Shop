@@ -10,7 +10,7 @@ const {authUser,
     updateUser
 } = require('../controllers/userController');
 const protect = require('../middleware/authMiddleWare');
-const admin = require('../middleware/adminMiddleWare');
+const admin = require('../middleware/adminMiddleware');
 
 // router.get('/',product.getProducts);
 router.route('/').post(registerUser);
