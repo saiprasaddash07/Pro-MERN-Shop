@@ -1,6 +1,8 @@
 import * as constants from '../constants/orderConstants';
 import axios from "axios";
 
+import errorObject from "./error";
+
 export const createOrder = (order) => async (dispatch,getState) => {
     try {
         dispatch({
@@ -23,14 +25,7 @@ export const createOrder = (order) => async (dispatch,getState) => {
             payload: data
         });
     } catch (error) {
-        dispatch({
-            type: constants.ORDER_CREATE_FAIL,
-            payload:
-                error.response &&
-                error.response.data.message
-                    ? error.response.data.message
-                    : error.message
-        });
+        dispatch(errorObject(constants.ORDER_CREATE_FAIL,error));
     }
 }
 
@@ -56,14 +51,7 @@ export const getOrderDetails = (id) => async (dispatch,getState) => {
             payload: data
         });
     } catch (error) {
-        dispatch({
-            type: constants.ORDER_DETAILS_FAIL,
-            payload:
-                error.response &&
-                error.response.data.message
-                    ? error.response.data.message
-                    : error.message
-        });
+        dispatch(errorObject(constants.ORDER_DETAILS_FAIL,error));
     }
 }
 
@@ -89,14 +77,7 @@ export const payOrder = (orderId,paymentResult) => async (dispatch,getState) => 
             payload: data
         });
     } catch (error) {
-        dispatch({
-            type: constants.ORDER_PAY_FAIL,
-            payload:
-                error.response &&
-                error.response.data.message
-                    ? error.response.data.message
-                    : error.message
-        });
+        dispatch(errorObject(constants.ORDER_PAY_FAIL,error));
     }
 }
 
@@ -133,14 +114,7 @@ export const listMyOrders = () => async (dispatch,getState) => {
             payload: data
         });
     } catch (error) {
-        dispatch({
-            type: constants.ORDER_LIST_MY_FAIL,
-            payload:
-                error.response &&
-                error.response.data.message
-                    ? error.response.data.message
-                    : error.message
-        });
+        dispatch(errorObject(constants.ORDER_LIST_MY_FAIL,error));
     }
 }
 
@@ -165,14 +139,7 @@ export const listOrders = () => async (dispatch,getState) => {
             payload: data
         });
     } catch (error) {
-        dispatch({
-            type: constants.ORDER_LIST_FAIL,
-            payload:
-                error.response &&
-                error.response.data.message
-                    ? error.response.data.message
-                    : error.message
-        });
+        dispatch(errorObject(constants.ORDER_LIST_FAIL,error));
     }
 }
 
@@ -197,13 +164,6 @@ export const deliverOrder = (order) => async (dispatch,getState) => {
             success : true
         });
     } catch (error) {
-        dispatch({
-            type: constants.ORDER_DELIVER_FAIL,
-            payload:
-                error.response &&
-                error.response.data.message
-                    ? error.response.data.message
-                    : error.message
-        });
+        dispatch(errorObject(constants.ORDER_DELIVER_FAIL,error));
     }
 }

@@ -1,6 +1,7 @@
 import * as constants from "../constants/userConstants";
 import {ORDER_LIST_MY_RESET} from '../constants/orderConstants';
 import axios from 'axios';
+import errorObject from "./error";
 
 export const login = (email,password) => async (dispatch) => {
     try{
@@ -23,14 +24,7 @@ export const login = (email,password) => async (dispatch) => {
 
         localStorage.setItem('userInfo',JSON.stringify(data));
     }catch (error) {
-        dispatch({
-            type:constants.USER_LOGIN_FAIL,
-            payload:
-                error.response &&
-                error.response.data.message
-                    ? error.response.data.message
-                    :error.message
-        });
+        dispatch(errorObject(constants.USER_LOGIN_FAIL,error));
     }
 }
 
@@ -82,14 +76,7 @@ export const register = (name,email,password) => async (dispatch) => {
 
         localStorage.setItem('userInfo',JSON.stringify(data));
     }catch (error) {
-        dispatch({
-            type:constants.USER_REGISTER_FAIL,
-            payload:
-                error.response &&
-                error.response.data.message
-                    ? error.response.data.message
-                    :error.message
-        });
+        dispatch(errorObject(constants.USER_REGISTER_FAIL,error));
     }
 }
 
@@ -119,14 +106,7 @@ export const getUserDetails = (id) => async (dispatch,getState) => {
             payload: data
         });
     } catch (error) {
-        dispatch({
-            type: constants.USER_DETAILS_FAIL,
-            payload:
-                error.response &&
-                error.response.data.message
-                    ? error.response.data.message
-                    : error.message
-        });
+        dispatch(errorObject(constants.USER_DETAILS_FAIL,error));
     }
 }
 
@@ -161,14 +141,7 @@ export const updateUserDetails = (user) => async (dispatch,getState) => {
 
         localStorage.setItem('userInfo',JSON.stringify(data));
     } catch (error) {
-        dispatch({
-            type: constants.USER_UPDATE_PROFILE_FAIL,
-            payload:
-                error.response &&
-                error.response.data.message
-                    ? error.response.data.message
-                    : error.message
-        });
+        dispatch(errorObject(constants.USER_UPDATE_PROFILE_FAIL,error));
     }
 }
 
@@ -193,14 +166,7 @@ export const listUsers = () => async (dispatch,getState) => {
             payload: data
         });
     } catch (error) {
-        dispatch({
-            type: constants.USER_LIST_FAIL,
-            payload:
-                error.response &&
-                error.response.data.message
-                    ? error.response.data.message
-                    : error.message
-        });
+        dispatch(errorObject(constants.USER_LIST_FAIL,error));
     }
 }
 
@@ -224,14 +190,7 @@ export const deleteUser = (id) => async (dispatch,getState) => {
             type: constants.USER_DELETE_SUCCESS
         });
     } catch (error) {
-        dispatch({
-            type: constants.USER_DELETE_FAIL,
-            payload:
-                error.response &&
-                error.response.data.message
-                    ? error.response.data.message
-                    : error.message
-        });
+        dispatch(errorObject(constants.USER_DELETE_FAIL,error));
     }
 }
 
@@ -264,13 +223,6 @@ export const updateUser = (userObject) => async (dispatch,getState) => {
         })
 
     } catch (error) {
-        dispatch({
-            type: constants.USER_UPDATE_FAIL,
-            payload:
-                error.response &&
-                error.response.data.message
-                    ? error.response.data.message
-                    : error.message
-        });
+        dispatch(errorObject(constants.USER_UPDATE_FAIL,error));
     }
 }

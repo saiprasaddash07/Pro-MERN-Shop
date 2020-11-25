@@ -3,6 +3,23 @@ const User = require('../models/userModel');
 
 const generateToken = require('../utils/generateWebToken');
 
+const userJSONFields = (user,shouldGenerateToken) => {
+    let userObject = {
+        _id:user._id,
+        name:user.name,
+        email:user.email,
+        isAdmin:user.isAdmin,
+    }
+    if(shouldGenerateToken){
+        return {
+            ...userObject,
+            token:generateToken(user._id)
+        }
+    }else{
+        return userObject;
+    }
+}
+
 // Description
 // @desc    Auth user & get token
 // @route   POST /api/users/login
@@ -12,13 +29,7 @@ const authUser = asyncHandler(async (req,res) => {
     const user = await User.findOne({email});
 
     if(user && (await user.matchPassword(password))){
-        res.json({
-            _id:user._id,
-            name:user.name,
-            email:user.email,
-            isAdmin:user.isAdmin,
-            token:generateToken(user._id)
-        });
+        res.json(userJSONFields(user,true));
     }else{
         res.status(401);
         throw new Error('Invalid email or password');
@@ -40,13 +51,7 @@ const registerUser = asyncHandler(async (req,res) => {
 
     const user = await User.create({name,email,password});
     if(user){
-        res.status(201).json({
-            _id:user._id,
-            name:user.name,
-            email:user.email,
-            isAdmin:user.isAdmin,
-            token:generateToken(user._id)
-        })
+        res.status(201).json(userJSONFields(user,true));
     }else{
         res.status(400);
         throw new Error('Invalid user data passed');
@@ -61,12 +66,7 @@ const getUserProfile = asyncHandler(async (req,res) => {
     const user = await User.findById(req.user._id);
 
     if(user){
-        res.json({
-            _id:user._id,
-            name:user.name,
-            email:user.email,
-            isAdmin:user.isAdmin
-        });
+        res.json(userJSONFields(user,false));
     }else{
         res.status(404);
         throw new Error('User has not found');
@@ -89,13 +89,7 @@ const updateUserProfile = asyncHandler(async (req,res) => {
 
         const updatedUser = await user.save();
 
-        res.json({
-            _id:updatedUser._id,
-            name:updatedUser.name,
-            email:updatedUser.email,
-            isAdmin:updatedUser.isAdmin,
-            token:generateToken(updatedUser._id)
-        });
+        res.json(userJSONFields(updatedUser,true));
     }else{
         res.status(404);
         throw new Error('User has not found');
@@ -154,12 +148,7 @@ const updateUser = asyncHandler(async (req,res) => {
 
         const updatedUser = await user.save();
 
-        res.json({
-            _id:updatedUser._id,
-            name:updatedUser.name,
-            email:updatedUser.email,
-            isAdmin:updatedUser.isAdmin
-        });
+        res.json(userJSONFields(updatedUser,false));
 
     }else{
         res.status(404);

@@ -1,6 +1,8 @@
 import * as constants from '../constants/productConstants';
 import axios from 'axios';
 
+import errorObject from "./error";
+
 export const listProducts = (keyword='',pageNumber = '') => async(dispatch) => {
     try{
         dispatch({
@@ -12,14 +14,7 @@ export const listProducts = (keyword='',pageNumber = '') => async(dispatch) => {
             payload:data
         });
     }catch (error) {
-        dispatch({
-            type:constants.PRODUCT_LIST_FAIL,
-            payload:
-                error.response &&
-                error.response.data.message
-                    ? error.response.data.message
-                    :error.message
-        });
+        dispatch(errorObject(constants.PRODUCT_LIST_FAIL,error));
     }
 };
 
@@ -34,14 +29,7 @@ export const listProductDetails = (id) => async(dispatch) => {
             payload:data
         });
     }catch (error) {
-        dispatch({
-            type:constants.PRODUCT_DETAILS_FAIL,
-            payload:
-                error.response &&
-                error.response.data.message
-                    ? error.response.data.message
-                    :error.message
-        });
+        dispatch(errorObject(constants.PRODUCT_DETAILS_FAIL,error));
     }
 };
 
@@ -65,14 +53,7 @@ export const deleteProduct = (id) => async (dispatch,getState) => {
             type: constants.PRODUCT_DELETE_SUCCESS
         });
     } catch (error) {
-        dispatch({
-            type: constants.PRODUCT_DELETE_FAIL,
-            payload:
-                error.response &&
-                error.response.data.message
-                    ? error.response.data.message
-                    : error.message
-        });
+        dispatch(errorObject(constants.PRODUCT_DELETE_FAIL,error));
     }
 }
 
@@ -103,14 +84,7 @@ export const createProduct = () => async (dispatch,getState) => {
             payload:data
         });
     } catch (error) {
-        dispatch({
-            type: constants.PRODUCT_CREATE_FAIL,
-            payload:
-                error.response &&
-                error.response.data.message
-                    ? error.response.data.message
-                    : error.message
-        });
+        dispatch(errorObject(constants.PRODUCT_CREATE_FAIL,error));
     }
 }
 
@@ -142,14 +116,7 @@ export const updateProduct = (product) => async (dispatch,getState) => {
             payload:data
         });
     } catch (error) {
-        dispatch({
-            type: constants.PRODUCT_UPDATE_FAIL,
-            payload:
-                error.response &&
-                error.response.data.message
-                    ? error.response.data.message
-                    : error.message
-        });
+        dispatch(errorObject(constants.PRODUCT_UPDATE_FAIL,error));
     }
 }
 
@@ -181,14 +148,7 @@ export const createProductReview = (productId,review) => async (dispatch,getStat
             success : true
         });
     } catch (error) {
-        dispatch({
-            type: constants.PRODUCT_CREATE_REVIEW_FAIL,
-            payload:
-                error.response &&
-                error.response.data.message
-                    ? error.response.data.message
-                    : error.message
-        });
+        dispatch(errorObject(constants.PRODUCT_CREATE_REVIEW_FAIL,error));
     }
 }
 
@@ -203,13 +163,6 @@ export const listTopProducts = () => async(dispatch) => {
             payload:data
         });
     }catch (error) {
-        dispatch({
-            type:constants.PRODUCT_TOP_FAIL,
-            payload:
-                error.response &&
-                error.response.data.message
-                    ? error.response.data.message
-                    :error.message
-        });
+        dispatch(errorObject(constants.PRODUCT_TOP_FAIL,error));
     }
 };

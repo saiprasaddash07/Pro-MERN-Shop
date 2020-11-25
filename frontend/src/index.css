@@ -50,6 +50,11 @@ h2{
   margin: 0 auto;
 }
 
+pagination {
+  display: flex;
+ justify-content: center;
+}
+
 @media (max-width: 1200px) and (min-width: 1000px ){
   .carousel img {
     margin-top: 60px;
