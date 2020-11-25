@@ -102,3 +102,12 @@ pagination {
     margin-bottom: 20px;
   }
 }
+
+.footerdiv{
+  padding: 60px 20px;
+}
+
+.hovered:hover{
+  color: #c88236;
+  transition: ease-out 0.4s;
+}

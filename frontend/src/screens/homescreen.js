@@ -9,6 +9,7 @@ import Paginate from '../components/paginate';
 import ProductCarousel from '../components/productCarousel';
 import MetaComponent from '../components/meta';
 import {Link} from "react-router-dom";
+import BottomFooter from '../components/bottomFooter';
 
 class HomeScreen extends  Component {
 
@@ -64,6 +65,8 @@ class HomeScreen extends  Component {
                             keyword={this.props.match.params.keyword
                                 ? this.props.match.params.keyword : '' }
                         />
+
+                        <BottomFooter />
 
                         </>
                 }
