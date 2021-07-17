@@ -34,6 +34,9 @@ PORT = 5000
 MONGO_URI = your mongodb uri
 JWT_SECRET = 'abc123'
 PAYPAL_CLIENT_ID = your paypal client id
+CLOUD_NAME = sample name of your bucket name when creating bucket
+CLOUD_API_KEY = api key from cloudinary
+CLOUD_API_SECRET = api secret from cloudinary
 ```
 
 ### Install Dependencies (frontend & backend)
