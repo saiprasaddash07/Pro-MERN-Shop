@@ -11,51 +11,57 @@ import {PayPalButton} from 'react-paypal-button-v2';
 class OrderScreen extends Component {
 
     state = {
-        sdkReady : false
+        sdkReady : false,
     }
 
     componentDidMount() {
+
         if(!this.props.user.userInfo){
             this.props.history.push('/login');
+            return;
         }
 
-        const addPaypalScript = async () =>{
-            const {data : clientId} = await axios.get('/api/config/paypal');
-            const script = document.createElement('script');
-            script.type = 'text/javascript';
-            script.src = `https://www.paypal.com/sdk/js?client-id=${clientId}`;
-            script.async = true;
-            script.onLoad = () => {
-                this.setState({sdkReady : true}) ;
-            };
-            document.body.appendChild(script);
-        }
-
-        const func = () => {
-            this.props.gettingAnOrderById(this.props.match.params.id)
-                .then(res=>{
-                    if(!this.props.orderDetails.order.isPaid){
-                        console.log(44);
-                        if(!window.paypal){
-                            addPaypalScript().then(r=>{
-                                this.setState({sdkReady : true}) ;
-                            });
-                        }
-                    }
-                }).catch(e=>{
-                console.log('Some error has occurred');
-            })
-        }
+        let f = 0;
 
         if((!this.props.orderDetails.order)){
-            func();
+            this.func();
+            f = 1;
         }
 
-        if(this.props.orderDetails.order){
+        if(!f && this.props.orderDetails.order){
             if (!this.props.orderPay.success) {
-                func();
+                this.func();
             }
         }
+    }
+
+    addPaypalScript = async () => {
+        const {data : clientId} = await axios.get('/api/config/paypal');
+        const script = document.createElement('script');
+        script.type = 'text/javascript';
+        script.src = `https://www.paypal.com/sdk/js?client-id=${clientId}&currency=IND`;
+        script.async = true;
+        script.onLoad = () => {
+            this.setState({sdkReady : true}) ;
+        };
+        document.body.appendChild(script);
+    }
+
+    func = () => {
+        this.props.gettingAnOrderById(this.props.match.params.id)
+            .then(res=>{
+                if(!this.props.orderDetails.order.isPaid){
+                    if(!window.paypal){
+                        this.addPaypalScript().then(r=>{
+                            this.setState({sdkReady : true}) ;
+                        });
+                    } else {
+                        this.setState({sdkReady : true}) ;
+                    }
+                }
+            }).catch(e=>{
+            console.log('Some error has occurred');
+        })
     }
 
     render() {

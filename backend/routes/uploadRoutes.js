@@ -2,6 +2,8 @@ const express = require('express');
 const multer = require('multer');
 const router = express.Router();
 const path  = require('path');
+const cloud = require('cloudinary');
+const asyncHandler = require('express-async-handler');
 
 const storage = multer.diskStorage({
     destination(req, file, cb) {
@@ -34,8 +36,15 @@ const upload = multer({
     },
 })
 
-router.post('/', upload.single('image'), (req, res) => {
-    res.send(`/${req.file.path}`);
-})
+// router.post('/', upload.single('image'), (req, res) => {
+//     res.send(`/${req.file.path}`);
+// })
+
+router.post('/', upload.single('image'), asyncHandler (async (req, res) => {
+    const uploadPhoto = await cloud.uploader.upload(`${req.file.path}`);
+    console.log(uploadPhoto);
+    console.log(uploadPhoto.url);
+    res.send(uploadPhoto.url); 
+}))
 
 module.exports = router;

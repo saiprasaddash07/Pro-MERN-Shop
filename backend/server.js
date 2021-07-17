@@ -4,6 +4,8 @@ const dotenv = require('dotenv');
 const connectDB = require('./config/db');
 const colors = require('colors');
 const morgan = require('morgan');
+const cloudinary = require('cloudinary');
+
 const productRoutes = require('./routes/productRoutes');
 const userRoutes = require('./routes/userRoutes');
 const orderRoutes = require('./routes/orderRoutes');
@@ -21,6 +23,12 @@ if(process.env.NODE_ENV === 'development'){
 }
 
 app.use(express.json());
+
+cloudinary.config({
+    cloud_name: process.env.CLOUD_NAME,
+    api_key: process.env.CLOUD_API_KEY,
+    api_secret: process.env.CLOUD_API_SECRET
+})
 
 app.use('/api/products',productRoutes);
 app.use('/api/users',userRoutes);
