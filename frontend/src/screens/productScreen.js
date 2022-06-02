@@ -7,6 +7,7 @@ import * as actions from "../actions/productActions";
 import Loader from "../components/loader";
 import Message from "../components/message";
 import MetaComponent from "../components/meta";
+import AdComponent from "../components/adComponent"
 
 class ProductScreen extends Component{
 
@@ -47,6 +48,7 @@ class ProductScreen extends Component{
         //const product = this.state.products.find(p => p._id === this.props.match.params.id);
         return (
             <div>
+                <AdComponent />
                 <Link className="btn btn-light my-3" to="/">Go Back</Link>
                 {this.props.loading
                     ? <Loader />
